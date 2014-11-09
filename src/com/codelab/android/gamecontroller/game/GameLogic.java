@@ -584,10 +584,12 @@ public class GameLogic {
         // You might need to use getButtonState() and requestTransition() methods.
         // You can also refer to processPausedMenuEvent() method above.
 
-        GameController controller = mGameControllerList.get(0);
-        if (controller instanceof GameController.TouchScreenController &&
-                ((GameController.TouchScreenController)controller).isScreenTouched()) {
-            requestTransition(mPlayingState);
+        for (GameController controller : mGameControllerList) {
+            boolean[] buttons = controller.getButtonState();
+
+            if (buttons[ButtonMapping.BUTTON_A.ordinal()]) {
+                requestTransition(mPlayingState);
+            }
         }
     }
 
@@ -682,8 +684,7 @@ public class GameLogic {
         public boolean onBackPressed() {
             // step 3.5: TODO: when a game is on StoppedState,
             // If a back button is pressed, game should be terminated.
-
-            return true;
+            return false; //BackPressed event couldn't be consumed in GameLogic.
         }
     }
 
@@ -726,8 +727,7 @@ public class GameLogic {
         public boolean onBackPressed() {
             // step 3.5: TODO: when a game is on PausedState,
             // If a back button is pressed, game should be stopped.
-
-            return true;
+            return requestTransition(mStoppedState);
         }
     }
 
@@ -775,8 +775,7 @@ public class GameLogic {
         public boolean onBackPressed() {
             // step 3.5: TODO: when a game is on PlayingState,
             // If a back button is pressed, game should be paused.
-
-            return true;
+            return requestTransition(mPausedState);
         }
     }
 }
