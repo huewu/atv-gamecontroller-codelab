@@ -209,7 +209,7 @@ public class FullscreenActivity extends Activity {
     @Override
     public boolean onGenericMotionEvent(MotionEvent event) {
         // step 4.1: TODO: handle generic motion events coming from joysticks.
-        return super.onGenericMotionEvent(event);
+        return mGameLogic.processMotionEvent(event);
     }
 
     /**
