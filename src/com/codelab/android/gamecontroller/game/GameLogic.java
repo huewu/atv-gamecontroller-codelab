@@ -246,6 +246,13 @@ public class GameLogic {
         // step 5.1: TODO: find the input device by a given deviceId and remove it from the list.
         // if a device is removed, change game state to mPausedState.
 
+        for (GameController gameController : mGameControllerList) {
+            if (gameController.getDeviceId() == deviceId) {
+                mGameControllerList.remove(gameController);
+                requestTransition(mPausedState);
+            }
+        }
+
         final int size = mGameControllerList.size();
         Log.d(TAG, "Controller Count: " + size);
         return size;
