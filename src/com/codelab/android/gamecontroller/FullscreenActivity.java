@@ -104,6 +104,7 @@ public class FullscreenActivity extends Activity {
         });
 
         // step 2.1: TODO: get the InputManager service and assign it to the mInputManager field.
+        mInputManager = (InputManager) getSystemService(INPUT_SERVICE);
 
         // step 2.2: TODO: implement InputDeviceListener
         // When the onInputDeviceAdded() callback is called,
@@ -116,6 +117,27 @@ public class FullscreenActivity extends Activity {
         // step 6.2: TODO: In order to support multi controllers,
         // replace setCurrentController() with addController() to handle multiple controllers
         // in your InputDeviceListener implementation.
+        mInputDeviceListener = new InputManager.InputDeviceListener() {
+            @Override
+            public void onInputDeviceAdded(int deviceId) {
+                Log.d(TAG, "input device is added");
+                InputDevice device = mInputManager.getInputDevice(deviceId);
+                mGameLogic.setCurrentController(device);
+            }
+
+            @Override
+            public void onInputDeviceRemoved(int deviceId) {
+                Log.d(TAG, "input device is removed");
+                mGameLogic.removeController(deviceId);
+                checkGameControllers();
+            }
+
+            @Override
+            public void onInputDeviceChanged(int deviceId) {
+                Log.d(TAG, "input device is changed");
+                // IGNORED
+            }
+        };
     }
 
     @Override
@@ -125,6 +147,8 @@ public class FullscreenActivity extends Activity {
         // step 2.2: TODO register InputDeviceListener
         // To avoid a synchronization problem, register GameHandler as the handler on which
         // the listener should be invoked. You can use GameLogic.getGameHandler() method.
+        mInputManager.registerInputDeviceListener(
+                mInputDeviceListener, mGameLogic.getGameHandler());
     }
 
     @Override
@@ -132,6 +156,7 @@ public class FullscreenActivity extends Activity {
         super.onPause();
 
         // step 2.2: TODO unregister InputDeviceListener
+        mInputManager.unregisterInputDeviceListener(mInputDeviceListener);
     }
 
     /**
@@ -202,16 +227,11 @@ public class FullscreenActivity extends Activity {
         // step 6.2 TODO: In order to support multi controllers,
         // Replace the setCurrentController() method with the addController() method.
 
-        boolean supportTouchScreen
-                = getPackageManager().hasSystemFeature("android.hardware.touchscreen");
+        int[] deviceIds = mInputManager.getInputDeviceIds();
 
-        int deviceIds[] = InputDevice.getDeviceIds();
         for (int deviceId : deviceIds) {
-            InputDevice device = InputDevice.getDevice(deviceId);
-
-            if (supportTouchScreen && GameControllerUtil.isTouchScreen(device)) {
-                mGameLogic.setCurrentController(device);
-            }
+            InputDevice dev = InputDevice.getDevice(deviceId);
+            mGameLogic.setCurrentController(dev);
         }
     }
 

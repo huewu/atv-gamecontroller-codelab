@@ -17,7 +17,12 @@ public class GameControllerUtil {
         //based on the given device, determine whether this device supports gamepad or joystick.
         //you can refer to 'isTouchScreen' method below.
 
-        return false;
+        boolean bSupportJoystick = (device.getSources() & InputDevice.SOURCE_JOYSTICK)
+                == InputDevice.SOURCE_JOYSTICK;
+        boolean bSupportGamePad = (device.getSources() & InputDevice.SOURCE_GAMEPAD)
+                == InputDevice.SOURCE_GAMEPAD;
+
+        return (bSupportGamePad || bSupportJoystick);
     }
 
     public static boolean isTouchScreen(InputDevice device) {
