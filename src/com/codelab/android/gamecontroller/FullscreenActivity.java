@@ -33,6 +33,7 @@ import android.view.WindowManager;
 
 import com.codelab.android.gamecontroller.game.GameLogic;
 import com.codelab.android.gamecontroller.util.GameControllerUtil;
+import com.codelab.android.gamecontroller.util.TvUtil;
 
 public class FullscreenActivity extends Activity {
     private static final String TAG = "FullscreenActivity";
@@ -62,7 +63,9 @@ public class FullscreenActivity extends Activity {
         setContentView(R.layout.activity_fullscreen);
 
         // step 1.7: TODO: invoke applyOverscanPadding() when the app is running on the TV.
-        // if (TvUtil.isTv(this)) ...
+        if (TvUtil.isTv(this)) {
+            applyOverscanPadding();
+        }
 
         mGameLogic = new GameLogic(this);
         mGameLogic.setGameChangeListener(new GameLogic.OnGameChangeListener() {
