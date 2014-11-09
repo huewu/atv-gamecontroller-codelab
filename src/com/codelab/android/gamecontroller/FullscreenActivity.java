@@ -171,13 +171,21 @@ public class FullscreenActivity extends Activity {
     @Override
     public boolean onKeyDown(final int keyCode, KeyEvent ev) {
         // step 3.1: TODO: handle key down events
-        return super.onKeyDown(keyCode, ev);
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            return super.onKeyDown(keyCode, ev);
+        } else {
+            return mGameLogic.processKeyEvent(ev);
+        }
     }
 
     @Override
     public boolean onKeyUp(final int keyCode, KeyEvent ev) {
         // step 3.1: TODO: handle key up events
-        return super.onKeyUp(keyCode, ev);
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            return super.onKeyUp(keyCode, ev);
+        } else {
+            return mGameLogic.processKeyEvent(ev);
+        }
     }
 
     @Override
@@ -187,7 +195,9 @@ public class FullscreenActivity extends Activity {
         // It will handle the game logic regarding KEYCODE_BACK and will return true
         // if the event is successfully handled. If it returns false meaning
         // the game logic didn’t consume the event, you should call super.onBackPressed().
-        super.onBackPressed();
+        if (!mGameLogic.processBackPressed()) {
+            super.onBackPressed();
+        }
     }
 
     @Override

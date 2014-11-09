@@ -8,6 +8,7 @@ import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 
+import com.codelab.android.gamecontroller.util.GameControllerUtil;
 import com.codelab.android.gamecontroller.util.GameControllerUtil.AxesMapping;
 import com.codelab.android.gamecontroller.util.GameControllerUtil.ButtonMapping;
 
@@ -64,6 +65,12 @@ public class GameController {
         // Based on the type of the Action of the KeyEvent,
         // set a mButtons array's value properly.
         // 'true' means a button is pressed and 'false' means a button is released.
+        final boolean pressed = (ev.getAction() == KeyEvent.ACTION_DOWN);
+        int buttonIndex = GameControllerUtil.getButtonMappingIndex(ev.getKeyCode());
+
+        if (buttonIndex != GameControllerUtil.INVALID_INDEX) {
+            mButtons[buttonIndex] = pressed;
+        }
     }
 
     public void setMotionEvent(MotionEvent ev) {
