@@ -1,3 +1,9 @@
+# Mac meta files
+*.DS_Store
+
+# AndroidStudio setting files
+.idea/
+
 # Built application files
 *.apk
 *.ap_
