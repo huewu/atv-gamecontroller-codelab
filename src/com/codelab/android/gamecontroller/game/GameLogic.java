@@ -548,6 +548,8 @@ public class GameLogic {
 
             // You can read right-joystick axis values using a AXIS_Z enum value.
             // In order to boost character's movement, multiply getMoveRatio() value.
+            float dRAxisX = axes[AxesMapping.AXIS_Z.ordinal()] * player.getMoveRatio();
+            player.rotate(dRAxisX);
         }
     }
 

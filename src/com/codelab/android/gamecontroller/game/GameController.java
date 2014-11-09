@@ -82,6 +82,10 @@ public class GameController {
         // The getFlat() method is used, to determine the range of values
         // bounding the joystick axis center. For more detailed information, refer to
         // GameControllerUtil.getCenteredAxis()
+        for (AxesMapping axesMapping : AxesMapping.values()) {
+            mAxes[axesMapping.ordinal()] = GameControllerUtil.getCenteredAxis(ev, mInputDevice,
+                    axesMapping.getMotionEvent());
+        }
     }
 
     //button state
